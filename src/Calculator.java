@@ -23,21 +23,7 @@ public class Calculator implements ActionListener {
 
         createJFrame();
         createJTextField();
-
-        percButton = new JButton("%");
-        CEButton = new JButton("CE");
-        CButton = new JButton("C");
-        delButton = new JButton("DEL");
-        fracButton = new JButton("1/x");
-        sqrButton = new JButton("x^2");
-        rootButton = new JButton("Root");
-        divButton = new JButton("/");
-        mulButton = new JButton("*");
-        subButton = new JButton("-");
-        addButton = new JButton("+");
-        equButton = new JButton("=");
-        dotButton = new JButton(",");
-        plmnButton = new JButton("+/-");
+        createJButtons();
 
         operatorButtons[0] = percButton;
         operatorButtons[1] = CEButton;
@@ -118,6 +104,23 @@ public class Calculator implements ActionListener {
         textField.setFocusable(false);
         textField.setBorder(null);
         textField.setHorizontalAlignment(SwingConstants.RIGHT);
+    }
+
+    private void createJButtons() {
+        percButton = new JButton("%");
+        CEButton = new JButton("CE");
+        CButton = new JButton("C");
+        delButton = new JButton("DEL");
+        fracButton = new JButton("1/x");
+        sqrButton = new JButton("x^2");
+        rootButton = new JButton("Root");
+        divButton = new JButton("/");
+        mulButton = new JButton("*");
+        subButton = new JButton("-");
+        addButton = new JButton("+");
+        equButton = new JButton("=");
+        dotButton = new JButton(",");
+        plmnButton = new JButton("+/-");
     }
 
     public static void main(String[] args) {
