@@ -177,11 +177,11 @@ public class Calculator implements ActionListener {
         }
 
         if (e.getSource() == CEButton) {
-            textField.setText("");
+            CEFunction();
         }
 
         if (e.getSource() == CButton) {
-            clearData(e);
+            clearFunction();
         }
 
         if (e.getSource() == delButton) {
@@ -223,6 +223,17 @@ public class Calculator implements ActionListener {
         String currentText = textField.getText();
         if (currentText.length() > 10) {
             textField.setText(currentText.substring(0, 10));
+        }
+    }
+
+    private void CEFunction() {
+        isOperationEnded = false;
+        if (num1 != 0 ) {
+            num2 = 0;
+            textField.setText("");
+        } else {
+            num1 = 0;
+            textField.setText("");
         }
     }
 
@@ -279,8 +290,8 @@ public class Calculator implements ActionListener {
         num1 = Double.parseDouble(textField.getText());
         result = Math.sqrt(num1);
         textField.setText(String.valueOf(result));
-        System.out.println(result);
         isOperationEnded = true;
+        num1 = 0;
     }
 
     private void sqrtFunction() {
@@ -300,6 +311,7 @@ public class Calculator implements ActionListener {
     private void delFunction() {
         String string = textField.getText();
         textField.setText("");
+        isOperationEnded = false;
         for (int j = 0; j < string.length() - 1; j++) {
             textField.setText(textField.getText() + string.charAt(j));
         }
@@ -309,5 +321,13 @@ public class Calculator implements ActionListener {
         num2 = Double.parseDouble(textField.getText());
         num2 = num2 / 100;
         textField.setText(String.valueOf(num2));
+    }
+
+    private void clearFunction() {
+        num1 = 0;
+        num2 = 0;
+        result = 0;
+        textField.setText("");
+        isOperationEnded = false;
     }
 }
