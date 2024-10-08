@@ -6,8 +6,8 @@ public class Calculator implements ActionListener {
 
     JFrame frame;
     JTextField textField;
-    JButton[] numberButton = new JButton[10];
-    JButton[] operatorButton = new JButton[14];
+    JButton[] numberButtons = new JButton[10];
+    JButton[] operatorButtons = new JButton[14];
     JButton percButton, CEButton, CButton, delButton, fracButton, sqrButton, dotButton;
     JButton rootButton, divButton, mulButton, subButton, addButton, equButton, plmnButton;
     JPanel panel;
@@ -48,32 +48,32 @@ public class Calculator implements ActionListener {
         dotButton = new JButton(",");
         plmnButton = new JButton("+/-");
 
-        operatorButton[0] = percButton;
-        operatorButton[1] = CEButton;
-        operatorButton[2] = CButton;
-        operatorButton[3] = delButton;
-        operatorButton[4] = fracButton;
-        operatorButton[5] = sqrButton;
-        operatorButton[6] = rootButton;
-        operatorButton[7] = divButton;
-        operatorButton[8] = mulButton;
-        operatorButton[9] = subButton;
-        operatorButton[10] = addButton;
-        operatorButton[11] = equButton;
-        operatorButton[12] = dotButton;
-        operatorButton[13] = plmnButton;
+        operatorButtons[0] = percButton;
+        operatorButtons[1] = CEButton;
+        operatorButtons[2] = CButton;
+        operatorButtons[3] = delButton;
+        operatorButtons[4] = fracButton;
+        operatorButtons[5] = sqrButton;
+        operatorButtons[6] = rootButton;
+        operatorButtons[7] = divButton;
+        operatorButtons[8] = mulButton;
+        operatorButtons[9] = subButton;
+        operatorButtons[10] = addButton;
+        operatorButtons[11] = equButton;
+        operatorButtons[12] = dotButton;
+        operatorButtons[13] = plmnButton;
 
         for (int i = 0; i < 14; i++) {
-            operatorButton[i].addActionListener(this);
-            operatorButton[i].setFont(buttonsFont);
-            operatorButton[i].setFocusable(false);
+            operatorButtons[i].addActionListener(this);
+            operatorButtons[i].setFont(buttonsFont);
+            operatorButtons[i].setFocusable(false);
         }
 
         for (int i = 0; i < 10; i++) {
-            numberButton[i] = new JButton(String.valueOf(i));
-            numberButton[i].addActionListener(this);
-            numberButton[i].setFont(buttonsFont);
-            numberButton[i].setFocusable(false);
+            numberButtons[i] = new JButton(String.valueOf(i));
+            numberButtons[i].addActionListener(this);
+            numberButtons[i].setFont(buttonsFont);
+            numberButtons[i].setFocusable(false);
         }
 
         panel = new JPanel();
@@ -88,20 +88,20 @@ public class Calculator implements ActionListener {
         panel.add(sqrButton);
         panel.add(rootButton);
         panel.add(divButton);
-        panel.add(numberButton[7]);
-        panel.add(numberButton[8]);
-        panel.add(numberButton[9]);
+        panel.add(numberButtons[7]);
+        panel.add(numberButtons[8]);
+        panel.add(numberButtons[9]);
         panel.add(mulButton);
-        panel.add(numberButton[4]);
-        panel.add(numberButton[5]);
-        panel.add(numberButton[6]);
+        panel.add(numberButtons[4]);
+        panel.add(numberButtons[5]);
+        panel.add(numberButtons[6]);
         panel.add(subButton);
-        panel.add(numberButton[1]);
-        panel.add(numberButton[2]);
-        panel.add(numberButton[3]);
+        panel.add(numberButtons[1]);
+        panel.add(numberButtons[2]);
+        panel.add(numberButtons[3]);
         panel.add(addButton);
         panel.add(plmnButton);
-        panel.add(numberButton[0]);
+        panel.add(numberButtons[0]);
         panel.add(dotButton);
         panel.add(equButton);
 
@@ -123,7 +123,7 @@ public class Calculator implements ActionListener {
 
         if (isOperationEnded) {
             for (int i = 0; i < 10; i++) {
-                if (e.getSource() == numberButton[i]) {
+                if (e.getSource() == numberButtons[i]) {
                     num1 = 0;
                     num2 = 0;
                     result = 0;
@@ -134,7 +134,7 @@ public class Calculator implements ActionListener {
             }
         } else {
             for (int i = 0; i < 10; i++) {
-                if (e.getSource() == numberButton[i]) {
+                if (e.getSource() == numberButtons[i]) {
                     textField.setText(textField.getText().concat(String.valueOf(i)));
                 }
             }
