@@ -13,7 +13,7 @@ public class Calculator implements ActionListener {
     JPanel panel;
 
     Font buttonsFont = new Font("Arial", Font.PLAIN, 20);
-    Font tfFont = new Font("Arial", Font.BOLD, 70);
+    Font textFieldFont = new Font("Arial", Font.BOLD, 70);
 
     double num1 = 0, num2 = 0, result = 0;
     char operator;
@@ -28,7 +28,7 @@ public class Calculator implements ActionListener {
 
         textField = new JTextField("");
         textField.setBounds(5, 95, 545, 100);
-        textField.setFont(tfFont);
+        textField.setFont(textFieldFont);
         textField.setFocusable(false);
         textField.setBorder(null);
         textField.setHorizontalAlignment(SwingConstants.RIGHT);
