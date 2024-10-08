@@ -140,7 +140,7 @@ public class Calculator implements ActionListener {
         }
     }
 
-    private void clearData(ActionEvent e) {
+    private void clearData (ActionEvent e) {;
         for (int i = 0; i < 10; i++) {
             if (e.getSource() == numberButtons[i]) {
                 num1 = 0;
