@@ -25,48 +25,13 @@ public class Calculator implements ActionListener {
         createJTextField();
         createJButtons();
         assignButtons();
+        createPanel();
 
         for (int i = 0; i < 14; i++) {
             operatorButtons[i].addActionListener(this);
             operatorButtons[i].setFont(buttonsFont);
             operatorButtons[i].setFocusable(false);
         }
-
-        for (int i = 0; i < 10; i++) {
-            numberButtons[i] = new JButton(String.valueOf(i));
-            numberButtons[i].addActionListener(this);
-            numberButtons[i].setFont(buttonsFont);
-            numberButtons[i].setFocusable(false);
-        }
-
-        panel = new JPanel();
-        panel.setBounds(5, 258, 545, 508);
-        panel.setLayout(new GridLayout(6, 4, 5, 5));
-
-        panel.add(percButton);
-        panel.add(CEButton);
-        panel.add(CButton);
-        panel.add(delButton);
-        panel.add(fracButton);
-        panel.add(sqrButton);
-        panel.add(rootButton);
-        panel.add(divButton);
-        panel.add(numberButtons[7]);
-        panel.add(numberButtons[8]);
-        panel.add(numberButtons[9]);
-        panel.add(mulButton);
-        panel.add(numberButtons[4]);
-        panel.add(numberButtons[5]);
-        panel.add(numberButtons[6]);
-        panel.add(subButton);
-        panel.add(numberButtons[1]);
-        panel.add(numberButtons[2]);
-        panel.add(numberButtons[3]);
-        panel.add(addButton);
-        panel.add(plmnButton);
-        panel.add(numberButtons[0]);
-        panel.add(dotButton);
-        panel.add(equButton);
 
         frame.add(panel);
         frame.add(textField);
@@ -124,6 +89,45 @@ public class Calculator implements ActionListener {
         operatorButtons[11] = equButton;
         operatorButtons[12] = dotButton;
         operatorButtons[13] = plmnButton;
+    }
+
+    private void createPanel() {
+
+        for (int i = 0; i < 10; i++) {
+            numberButtons[i] = new JButton(String.valueOf(i));
+            numberButtons[i].addActionListener(this);
+            numberButtons[i].setFont(buttonsFont);
+            numberButtons[i].setFocusable(false);
+        }
+
+        panel = new JPanel();
+        panel.setBounds(5, 258, 545, 508);
+        panel.setLayout(new GridLayout(6, 4, 5, 5));
+
+        panel.add(percButton);
+        panel.add(CEButton);
+        panel.add(CButton);
+        panel.add(delButton);
+        panel.add(fracButton);
+        panel.add(sqrButton);
+        panel.add(rootButton);
+        panel.add(divButton);
+        panel.add(numberButtons[7]);
+        panel.add(numberButtons[8]);
+        panel.add(numberButtons[9]);
+        panel.add(mulButton);
+        panel.add(numberButtons[4]);
+        panel.add(numberButtons[5]);
+        panel.add(numberButtons[6]);
+        panel.add(subButton);
+        panel.add(numberButtons[1]);
+        panel.add(numberButtons[2]);
+        panel.add(numberButtons[3]);
+        panel.add(addButton);
+        panel.add(plmnButton);
+        panel.add(numberButtons[0]);
+        panel.add(dotButton);
+        panel.add(equButton);
     }
 
     public static void main(String[] args) {
