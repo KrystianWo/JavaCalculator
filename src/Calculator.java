@@ -131,25 +131,30 @@ public class Calculator implements ActionListener {
         panel.add(equButton);
     }
 
+    private void operationEnded(ActionEvent e) {
+        for (int i = 0; i < 10; i++) {
+            if (e.getSource() == numberButtons[i]) {
+                num1 = 0;
+                num2 = 0;
+                result = 0;
+                textField.setText("");
+                isOperationEnded = false;
+                textField.setText(textField.getText().concat(String.valueOf(i)));
+            }
+        }
+    }
+
     public static void main(String[] args) {
 
         new Calculator();
+
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
 
         if (isOperationEnded) {
-            for (int i = 0; i < 10; i++) {
-                if (e.getSource() == numberButtons[i]) {
-                    num1 = 0;
-                    num2 = 0;
-                    result = 0;
-                    textField.setText("");
-                    isOperationEnded = false;
-                    textField.setText(textField.getText().concat(String.valueOf(i)));
-                }
-            }
+            operationEnded(e);
         } else {
             for (int i = 0; i < 10; i++) {
                 if (e.getSource() == numberButtons[i]) {
@@ -258,6 +263,5 @@ public class Calculator implements ActionListener {
         if (currentText.length() > 10) {
             textField.setText(currentText.substring(0, 10));
         }
-
     }
 }
