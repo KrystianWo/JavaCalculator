@@ -22,13 +22,7 @@ public class Calculator implements ActionListener {
     public Calculator() {
 
         createJFrame();
-
-        textField = new JTextField("");
-        textField.setBounds(5, 95, 545, 100);
-        textField.setFont(textFieldFont);
-        textField.setFocusable(false);
-        textField.setBorder(null);
-        textField.setHorizontalAlignment(SwingConstants.RIGHT);
+        createJTextField();
 
         percButton = new JButton("%");
         CEButton = new JButton("CE");
@@ -115,6 +109,15 @@ public class Calculator implements ActionListener {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(570, 810);
         frame.setLayout(null);
+    }
+
+    private void createJTextField() {
+        textField = new JTextField("");
+        textField.setBounds(5, 95, 545, 100);
+        textField.setFont(textFieldFont);
+        textField.setFocusable(false);
+        textField.setBorder(null);
+        textField.setHorizontalAlignment(SwingConstants.RIGHT);
     }
 
     public static void main(String[] args) {
