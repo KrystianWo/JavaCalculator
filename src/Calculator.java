@@ -27,12 +27,6 @@ public class Calculator implements ActionListener {
         assignButtons();
         createPanel();
 
-        for (int i = 0; i < 14; i++) {
-            operatorButtons[i].addActionListener(this);
-            operatorButtons[i].setFont(buttonsFont);
-            operatorButtons[i].setFocusable(false);
-        }
-
         frame.add(panel);
         frame.add(textField);
 
@@ -75,6 +69,7 @@ public class Calculator implements ActionListener {
     }
 
     private void assignButtons() {
+
         operatorButtons[0] = percButton;
         operatorButtons[1] = CEButton;
         operatorButtons[2] = CButton;
@@ -89,6 +84,12 @@ public class Calculator implements ActionListener {
         operatorButtons[11] = equButton;
         operatorButtons[12] = dotButton;
         operatorButtons[13] = plmnButton;
+
+        for (int i = 0; i < 14; i++) {
+            operatorButtons[i].addActionListener(this);
+            operatorButtons[i].setFont(buttonsFont);
+            operatorButtons[i].setFocusable(false);
+        }
     }
 
     private void createPanel() {
