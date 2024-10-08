@@ -24,21 +24,7 @@ public class Calculator implements ActionListener {
         createJFrame();
         createJTextField();
         createJButtons();
-
-        operatorButtons[0] = percButton;
-        operatorButtons[1] = CEButton;
-        operatorButtons[2] = CButton;
-        operatorButtons[3] = delButton;
-        operatorButtons[4] = fracButton;
-        operatorButtons[5] = sqrButton;
-        operatorButtons[6] = rootButton;
-        operatorButtons[7] = divButton;
-        operatorButtons[8] = mulButton;
-        operatorButtons[9] = subButton;
-        operatorButtons[10] = addButton;
-        operatorButtons[11] = equButton;
-        operatorButtons[12] = dotButton;
-        operatorButtons[13] = plmnButton;
+        assignButtons();
 
         for (int i = 0; i < 14; i++) {
             operatorButtons[i].addActionListener(this);
@@ -121,6 +107,23 @@ public class Calculator implements ActionListener {
         equButton = new JButton("=");
         dotButton = new JButton(",");
         plmnButton = new JButton("+/-");
+    }
+
+    private void assignButtons() {
+        operatorButtons[0] = percButton;
+        operatorButtons[1] = CEButton;
+        operatorButtons[2] = CButton;
+        operatorButtons[3] = delButton;
+        operatorButtons[4] = fracButton;
+        operatorButtons[5] = sqrButton;
+        operatorButtons[6] = rootButton;
+        operatorButtons[7] = divButton;
+        operatorButtons[8] = mulButton;
+        operatorButtons[9] = subButton;
+        operatorButtons[10] = addButton;
+        operatorButtons[11] = equButton;
+        operatorButtons[12] = dotButton;
+        operatorButtons[13] = plmnButton;
     }
 
     public static void main(String[] args) {
