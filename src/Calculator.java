@@ -30,6 +30,10 @@ public class Calculator implements ActionListener {
         frame.add(panel);
         frame.add(textField);
 
+        setFrameConfigs();
+    }
+
+    private void setFrameConfigs() {
         frame.setVisible(true);
         frame.setLocationRelativeTo(null);
         frame.setResizable(false);
@@ -169,9 +173,7 @@ public class Calculator implements ActionListener {
             checkForNumber(e);
         }
         if (e.getSource() == percButton) {
-            num2 = Double.parseDouble(textField.getText());
-            num2 = num2 / 100;
-            textField.setText(String.valueOf(num2));
+            percentFunc();
         }
 
         if (e.getSource() == CEButton) {
@@ -179,95 +181,133 @@ public class Calculator implements ActionListener {
         }
 
         if (e.getSource() == CButton) {
-            textField.setText("");
-            num1 = 0;
-            num2 = 0;
-            result = 0;
-            isOperationEnded = false;
+            clearData(e);
         }
 
         if (e.getSource() == delButton) {
-            String string = textField.getText();
-            textField.setText("");
-            for (int j = 0; j < string.length() - 1; j++) {
-                textField.setText(textField.getText() + string.charAt(j));
-            }
+            delFunction();
         }
 
         if (e.getSource() == fracButton) {
-            double num = Double.parseDouble(textField.getText());
-            result = 1 / num;
-            textField.setText(String.valueOf(result));
-            isOperationEnded = true;
+            fracFunction();
         }
 
         if (e.getSource() == sqrButton) {
-            num1 = Double.parseDouble(textField.getText());
-            result = num1 * num1;
-            textField.setText(String.valueOf(result));
-            isOperationEnded = true;
+            sqrtFunction();
         }
 
         if (e.getSource() == rootButton) {
-            num1 = Double.parseDouble(textField.getText());
-            result = Math.sqrt(num1);
-            textField.setText(String.valueOf(result));
-            System.out.println(result);
-            isOperationEnded = true;
+            rootFunction();
         }
 
         if (e.getSource() == divButton) {
-            num1 = Double.parseDouble(textField.getText());
-            operator = '/';
-            textField.setText("");
-            isOperationEnded = false;
+            divideFunction();
         }
 
         if (e.getSource() == mulButton) {
-            num1 = Double.parseDouble(textField.getText());
-            operator = '*';
-            textField.setText("");
-            isOperationEnded = false;
+            mulFunction();
         }
 
         if (e.getSource() == subButton) {
-            num1 = Double.parseDouble(textField.getText());
-            operator = '-';
-            textField.setText("");
-            isOperationEnded = false;
+            subFunction();
         }
 
         if (e.getSource() == addButton) {
-            num1 = Double.parseDouble(textField.getText());
-            operator = '+';
-            textField.setText("");
-            isOperationEnded = false;
+            addFunction();
         }
 
         if (e.getSource() == equButton) {
-            num2 = Double.parseDouble(textField.getText());
-
-            switch (operator) {
-                case '+':
-                    result = num1 + num2;
-                    break;
-                case '-':
-                    result = num1 - num2;
-                    break;
-                case '*':
-                    result = num1 * num2;
-                    break;
-                case '/':
-                    result = num1 / num2;
-                    break;
-            }
-            textField.setText(String.valueOf(result));
-            isOperationEnded = true;
+            equFunction();
         }
 
         String currentText = textField.getText();
         if (currentText.length() > 10) {
             textField.setText(currentText.substring(0, 10));
         }
+    }
+
+    private void equFunction() {
+        num2 = Double.parseDouble(textField.getText());
+
+        switch (operator) {
+            case '+':
+                result = num1 + num2;
+                break;
+            case '-':
+                result = num1 - num2;
+                break;
+            case '*':
+                result = num1 * num2;
+                break;
+            case '/':
+                result = num1 / num2;
+                break;
+        }
+        textField.setText(String.valueOf(result));
+        isOperationEnded = true;
+    }
+
+    private void addFunction() {
+        num1 = Double.parseDouble(textField.getText());
+        operator = '+';
+        textField.setText("");
+        isOperationEnded = false;
+    }
+
+    private void subFunction() {
+        num1 = Double.parseDouble(textField.getText());
+        operator = '-';
+        textField.setText("");
+        isOperationEnded = false;
+    }
+
+    private void mulFunction() {
+        num1 = Double.parseDouble(textField.getText());
+        operator = '*';
+        textField.setText("");
+        isOperationEnded = false;
+    }
+
+    private void divideFunction() {
+        num1 = Double.parseDouble(textField.getText());
+        operator = '/';
+        textField.setText("");
+        isOperationEnded = false;
+    }
+
+    private void rootFunction() {
+        num1 = Double.parseDouble(textField.getText());
+        result = Math.sqrt(num1);
+        textField.setText(String.valueOf(result));
+        System.out.println(result);
+        isOperationEnded = true;
+    }
+
+    private void sqrtFunction() {
+        num1 = Double.parseDouble(textField.getText());
+        result = num1 * num1;
+        textField.setText(String.valueOf(result));
+        isOperationEnded = true;
+    }
+
+    private void fracFunction() {
+        double num = Double.parseDouble(textField.getText());
+        result = 1 / num;
+        textField.setText(String.valueOf(result));
+        isOperationEnded = true;
+    }
+
+    private void delFunction() {
+        String string = textField.getText();
+        textField.setText("");
+        for (int j = 0; j < string.length() - 1; j++) {
+            textField.setText(textField.getText() + string.charAt(j));
+        }
+    }
+
+    private void percentFunc() {
+        num2 = Double.parseDouble(textField.getText());
+        num2 = num2 / 100;
+        textField.setText(String.valueOf(num2));
     }
 }
