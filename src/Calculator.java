@@ -131,7 +131,16 @@ public class Calculator implements ActionListener {
         panel.add(equButton);
     }
 
-    private void operationEnded(ActionEvent e) {
+    private void checkForNumber(ActionEvent e) {
+        for (int i = 0; i < 10; i++) {
+            if (e.getSource() == numberButtons[i]) {
+                isOperationEnded = false;
+                textField.setText(textField.getText().concat(String.valueOf(i)));
+            }
+        }
+    }
+
+    private void clearData(ActionEvent e) {
         for (int i = 0; i < 10; i++) {
             if (e.getSource() == numberButtons[i]) {
                 num1 = 0;
@@ -154,13 +163,10 @@ public class Calculator implements ActionListener {
     public void actionPerformed(ActionEvent e) {
 
         if (isOperationEnded) {
-            operationEnded(e);
+            clearData(e);
+            checkForNumber(e);
         } else {
-            for (int i = 0; i < 10; i++) {
-                if (e.getSource() == numberButtons[i]) {
-                    textField.setText(textField.getText().concat(String.valueOf(i)));
-                }
-            }
+            checkForNumber(e);
         }
         if (e.getSource() == percButton) {
             num2 = Double.parseDouble(textField.getText());
