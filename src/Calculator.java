@@ -20,16 +20,13 @@ public class Calculator implements ActionListener {
     boolean isOperationEnded = true;
 
     public Calculator() {
-
         createJFrame();
         createJTextField();
         createJButtons();
         assignButtons();
         createPanel();
-
         frame.add(panel);
         frame.add(textField);
-
         setFrameConfigs();
     }
 
@@ -67,7 +64,6 @@ public class Calculator implements ActionListener {
     }
 
     private void assignButtons() {
-
         operatorButtons[0] = percButton;
         operatorButtons[1] = CEButton;
         operatorButtons[2] = CButton;
@@ -98,11 +94,9 @@ public class Calculator implements ActionListener {
     }
 
     private void createPanel() {
-
         panel = new JPanel();
         panel.setBounds(5, 258, 545, 508);
         panel.setLayout(new GridLayout(6, 4, 5, 5));
-
         panel.add(percButton);
         panel.add(CEButton);
         panel.add(CButton);
@@ -135,94 +129,47 @@ public class Calculator implements ActionListener {
         frame.setResizable(false);
     }
 
-    public static void main(String[] args) {
-
-        new Calculator();
-
-    }
-
     @Override
     public void actionPerformed(ActionEvent e) {
-
         buttonClicked(e);
-        textLength();
+        setTextLength();
     }
 
     private void buttonClicked(ActionEvent e) {
         if (isOperationEnded) {
             clearData(e);
-            checkForNumber(e);
-        } else {
-            checkForNumber(e);
         }
-
-        if (e.getSource() == percButton) {
-            percentFunction();
-        }
-
-        if (e.getSource() == CEButton) {
-            clearElementFunction();
-        }
-
-        if (e.getSource() == CButton) {
-            clearFunction();
-        }
-
-        if (e.getSource() == delButton) {
-            delFunction();
-        }
-
-        if (e.getSource() == fracButton) {
-            fracFunction();
-        }
-
-        if (e.getSource() == sqrButton) {
-            sqrFunction();
-        }
-
-        if (e.getSource() == rootButton) {
-            rootFunction();
-        }
-
-        if (e.getSource() == divButton) {
-            divFunction();
-        }
-
-        if (e.getSource() == mulButton) {
-            mulFunction();
-        }
-
-        if (e.getSource() == subButton) {
-            subFunction();
-        }
-
-        if (e.getSource() == addButton) {
-            addFunction();
-        }
-
-        if (e.getSource() == changeSignButton) {
-            changeSignFunction();
-        }
-
-        if(e.getSource() == decimalButton) {
-            decimalFunction();
-        }
-
-        if (e.getSource() == equButton) {
-            equFunction();
+        joinNumberIfPressed(e);
+        var source = e.getSource();
+        switch (source) {
+            case JButton b when b == percButton -> percentFunction();
+            case JButton b when b == CEButton -> clearElementFunction();
+            case JButton b when b == CButton -> clearFunction();
+            case JButton b when b == delButton -> delFunction();
+            case JButton b when b == fracButton -> fracFunction();
+            case JButton b when b == sqrButton -> sqrFunction();
+            case JButton b when b == rootButton -> rootFunction();
+            case JButton b when b == divButton -> divFunction();
+            case JButton b when b == mulButton -> mulFunction();
+            case JButton b when b == subButton -> subFunction();
+            case JButton b when b == addButton -> addFunction();
+            case JButton b when b == changeSignButton -> changeSignFunction();
+            case JButton b when b == decimalButton -> decimalFunction();
+            case JButton b when b == equButton -> equFunction();
+            default -> {}
         }
     }
 
-    private void textLength() {
+    private void setTextLength() {
         String currentText = textField.getText();
         if (currentText.length() > 10) {
-            currentText = (currentText.substring(0, 10));
-            textField.setText(currentText);
+            String updatedText = currentText.substring(0, 10);
+            textField.setText(updatedText);
         }
     }
 
     private void trimDecimal() {
-        textLength();
+        setTextLength();
         String number = textField.getText();
         String decimalSeparator = ".";
         String[] parts = number.split("\\" + decimalSeparator);
@@ -230,18 +177,16 @@ public class Calculator implements ActionListener {
         if (parts.length > 1) {
             String integerPart = parts[0];
             String decimalPart = parts[1];
-
-            decimalPart = decimalPart.replaceAll("0+$", "");
-
-            if (decimalPart.isEmpty()) {
+            String trimmedDecimalPart = decimalPart.replaceAll("0+$", "");
+            if (trimmedDecimalPart.isEmpty()) {
                 textField.setText(integerPart);
             } else {
-                textField.setText(integerPart + decimalSeparator + decimalPart);
+                textField.setText(integerPart + decimalSeparator + trimmedDecimalPart);
             }
         }
     }
 
-    private void clearData (ActionEvent e) {
+    private void clearData(ActionEvent e) {
         for (int i = 0; i < 10; i++) {
             if (e.getSource() == numberButtons[i]) {
                 num1 = 0;
@@ -253,7 +198,7 @@ public class Calculator implements ActionListener {
         }
     }
 
-    private void checkForNumber(ActionEvent e) {
+    private void joinNumberIfPressed(ActionEvent e) {
         for (int i = 0; i < 10; i++) {
             if (e.getSource() == numberButtons[i]) {
                 textField.setText(textField.getText().concat(String.valueOf(i)));
@@ -262,16 +207,16 @@ public class Calculator implements ActionListener {
     }
 
     private void percentFunction() {
-        num2 = Double.parseDouble(textField.getText());
-        num2 = num2 / 100;
-        textField.setText(String.valueOf(num2));
+        num1 = Double.parseDouble(textField.getText());
+        num1 = num1 / 100;
+        textField.setText(String.valueOf(num1));
     }
 
     private void clearElementFunction() {
-        isOperationEnded = false;
-        if (num1 != 0 ) {
+        if (num1 != 0) {
             num2 = 0;
             textField.setText("0");
+            isOperationEnded = false;
         } else {
             num1 = 0;
             textField.setText("0");
@@ -390,5 +335,7 @@ public class Calculator implements ActionListener {
         textField.setText(String.valueOf(result));
         isOperationEnded = true;
         trimDecimal();
+        num1 = 0;
+        num2 = 0;
     }
 }
