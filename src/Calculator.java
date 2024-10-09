@@ -8,7 +8,7 @@ public class Calculator implements ActionListener {
     JTextField textField;
     JButton[] numberButtons = new JButton[10];
     JButton[] operatorButtons = new JButton[14];
-    JButton percButton, CEButton, CButton, delButton, fracButton, sqrButton, dotButton;
+    JButton percButton, CEButton, CButton, delButton, fracButton, sqrButton, decimalButton;
     JButton rootButton, divButton, mulButton, subButton, addButton, equButton, changeSignButton;
     JPanel panel;
 
@@ -62,7 +62,7 @@ public class Calculator implements ActionListener {
         subButton = new JButton("-");
         addButton = new JButton("+");
         equButton = new JButton("=");
-        dotButton = new JButton(",");
+        decimalButton = new JButton(",");
         changeSignButton = new JButton("+/-");
     }
 
@@ -80,7 +80,7 @@ public class Calculator implements ActionListener {
         operatorButtons[9] = subButton;
         operatorButtons[10] = addButton;
         operatorButtons[11] = equButton;
-        operatorButtons[12] = dotButton;
+        operatorButtons[12] = decimalButton;
         operatorButtons[13] = changeSignButton;
 
         for (int i = 0; i < 14; i++) {
@@ -125,7 +125,7 @@ public class Calculator implements ActionListener {
         panel.add(addButton);
         panel.add(changeSignButton);
         panel.add(numberButtons[0]);
-        panel.add(dotButton);
+        panel.add(decimalButton);
         panel.add(equButton);
     }
 
@@ -201,7 +201,11 @@ public class Calculator implements ActionListener {
         }
 
         if (e.getSource() == changeSignButton) {
-            changeSign();
+            changeSignFunction();
+        }
+
+        if(e.getSource() == decimalButton) {
+            decimalFunction();
         }
 
         if (e.getSource() == equButton) {
@@ -320,13 +324,20 @@ public class Calculator implements ActionListener {
         isOperationEnded = false;
     }
 
-    private void changeSign () {
+    private void changeSignFunction() {
         Double sign = Double.parseDouble(textField.getText());
         if (sign > 0) {
-            textField.setText("-" + String.valueOf(sign));
+            textField.setText("-" + sign);
         } else if (sign < 0) {
             sign = -sign;
             textField.setText(String.valueOf(sign));
+        }
+    }
+
+    private void decimalFunction() {
+        String isDecimal = textField.getText();
+        if (!isDecimal.contains(".")) {
+            textField.setText(Integer.parseInt(isDecimal) + ".");
         }
     }
 
