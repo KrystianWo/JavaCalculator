@@ -33,12 +33,6 @@ public class Calculator implements ActionListener {
         setFrameConfigs();
     }
 
-    private void setFrameConfigs() {
-        frame.setVisible(true);
-        frame.setLocationRelativeTo(null);
-        frame.setResizable(false);
-    }
-
     private void createJFrame() {
         frame = new JFrame("Kalkulator");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -94,9 +88,6 @@ public class Calculator implements ActionListener {
             operatorButtons[i].setFont(buttonsFont);
             operatorButtons[i].setFocusable(false);
         }
-    }
-
-    private void createPanel() {
 
         for (int i = 0; i < 10; i++) {
             numberButtons[i] = new JButton(String.valueOf(i));
@@ -104,6 +95,9 @@ public class Calculator implements ActionListener {
             numberButtons[i].setFont(buttonsFont);
             numberButtons[i].setFocusable(false);
         }
+    }
+
+    private void createPanel() {
 
         panel = new JPanel();
         panel.setBounds(5, 258, 545, 508);
@@ -135,26 +129,10 @@ public class Calculator implements ActionListener {
         panel.add(equButton);
     }
 
-    private void checkForNumber(ActionEvent e) {
-        for (int i = 0; i < 10; i++) {
-            if (e.getSource() == numberButtons[i]) {
-                isOperationEnded = false;
-                textField.setText(textField.getText().concat(String.valueOf(i)));
-            }
-        }
-    }
-
-    private void clearData (ActionEvent e) {
-        for (int i = 0; i < 10; i++) {
-            if (e.getSource() == numberButtons[i]) {
-                num1 = 0;
-                num2 = 0;
-                result = 0;
-                textField.setText("");
-                isOperationEnded = false;
-                textField.setText(textField.getText().concat(String.valueOf(i)));
-            }
-        }
+    private void setFrameConfigs() {
+        frame.setVisible(true);
+        frame.setLocationRelativeTo(null);
+        frame.setResizable(false);
     }
 
     public static void main(String[] args) {
@@ -166,18 +144,24 @@ public class Calculator implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 
+        buttonClicked(e);
+        textLength();
+    }
+
+    private void buttonClicked(ActionEvent e) {
         if (isOperationEnded) {
             clearData(e);
             checkForNumber(e);
         } else {
             checkForNumber(e);
         }
+
         if (e.getSource() == percButton) {
-            percentFunc();
+            percentFunction();
         }
 
         if (e.getSource() == CEButton) {
-            CEFunction();
+            clearElementFunction();
         }
 
         if (e.getSource() == CButton) {
@@ -193,7 +177,7 @@ public class Calculator implements ActionListener {
         }
 
         if (e.getSource() == sqrButton) {
-            sqrtFunction();
+            sqrFunction();
         }
 
         if (e.getSource() == rootButton) {
@@ -201,7 +185,7 @@ public class Calculator implements ActionListener {
         }
 
         if (e.getSource() == divButton) {
-            divideFunction();
+            divFunction();
         }
 
         if (e.getSource() == mulButton) {
@@ -219,14 +203,42 @@ public class Calculator implements ActionListener {
         if (e.getSource() == equButton) {
             equFunction();
         }
+    }
 
+    private void textLength() {
         String currentText = textField.getText();
         if (currentText.length() > 10) {
             textField.setText(currentText.substring(0, 10));
         }
     }
 
-    private void CEFunction() {
+    private void clearData (ActionEvent e) {
+        for (int i = 0; i < 10; i++) {
+            if (e.getSource() == numberButtons[i]) {
+                num1 = 0;
+                num2 = 0;
+                result = 0;
+                textField.setText("");
+                isOperationEnded = false;
+            }
+        }
+    }
+
+    private void checkForNumber(ActionEvent e) {
+        for (int i = 0; i < 10; i++) {
+            if (e.getSource() == numberButtons[i]) {
+                textField.setText(textField.getText().concat(String.valueOf(i)));
+            }
+        }
+    }
+
+    private void percentFunction() {
+        num2 = Double.parseDouble(textField.getText());
+        num2 = num2 / 100;
+        textField.setText(String.valueOf(num2));
+    }
+
+    private void clearElementFunction() {
         isOperationEnded = false;
         if (num1 != 0 ) {
             num2 = 0;
@@ -235,6 +247,73 @@ public class Calculator implements ActionListener {
             num1 = 0;
             textField.setText("");
         }
+    }
+
+    private void clearFunction() {
+        num1 = 0;
+        num2 = 0;
+        result = 0;
+        textField.setText("");
+        isOperationEnded = false;
+    }
+
+    private void delFunction() {
+        String string = textField.getText();
+        textField.setText("");
+        isOperationEnded = false;
+        for (int j = 0; j < string.length() - 1; j++) {
+            textField.setText(textField.getText() + string.charAt(j));
+        }
+    }
+
+    private void fracFunction() {
+        double num = Double.parseDouble(textField.getText());
+        result = 1 / num;
+        textField.setText(String.valueOf(result));
+        isOperationEnded = true;
+    }
+
+    private void sqrFunction() {
+        num1 = Double.parseDouble(textField.getText());
+        result = num1 * num1;
+        textField.setText(String.valueOf(result));
+        isOperationEnded = true;
+    }
+
+    private void rootFunction() {
+        num1 = Double.parseDouble(textField.getText());
+        result = Math.sqrt(num1);
+        textField.setText(String.valueOf(result));
+        isOperationEnded = true;
+        num1 = 0;
+    }
+
+    private void divFunction() {
+        num1 = Double.parseDouble(textField.getText());
+        operator = '/';
+        textField.setText("");
+        isOperationEnded = false;
+    }
+
+    private void mulFunction() {
+        num1 = Double.parseDouble(textField.getText());
+        operator = '*';
+        textField.setText("");
+        isOperationEnded = false;
+    }
+
+    private void subFunction() {
+        num1 = Double.parseDouble(textField.getText());
+        operator = '-';
+        textField.setText("");
+        isOperationEnded = false;
+    }
+
+    private void addFunction() {
+        num1 = Double.parseDouble(textField.getText());
+        operator = '+';
+        textField.setText("");
+        isOperationEnded = false;
     }
 
     private void equFunction() {
@@ -256,78 +335,5 @@ public class Calculator implements ActionListener {
         }
         textField.setText(String.valueOf(result));
         isOperationEnded = true;
-    }
-
-    private void addFunction() {
-        num1 = Double.parseDouble(textField.getText());
-        operator = '+';
-        textField.setText("");
-        isOperationEnded = false;
-    }
-
-    private void subFunction() {
-        num1 = Double.parseDouble(textField.getText());
-        operator = '-';
-        textField.setText("");
-        isOperationEnded = false;
-    }
-
-    private void mulFunction() {
-        num1 = Double.parseDouble(textField.getText());
-        operator = '*';
-        textField.setText("");
-        isOperationEnded = false;
-    }
-
-    private void divideFunction() {
-        num1 = Double.parseDouble(textField.getText());
-        operator = '/';
-        textField.setText("");
-        isOperationEnded = false;
-    }
-
-    private void rootFunction() {
-        num1 = Double.parseDouble(textField.getText());
-        result = Math.sqrt(num1);
-        textField.setText(String.valueOf(result));
-        isOperationEnded = true;
-        num1 = 0;
-    }
-
-    private void sqrtFunction() {
-        num1 = Double.parseDouble(textField.getText());
-        result = num1 * num1;
-        textField.setText(String.valueOf(result));
-        isOperationEnded = true;
-    }
-
-    private void fracFunction() {
-        double num = Double.parseDouble(textField.getText());
-        result = 1 / num;
-        textField.setText(String.valueOf(result));
-        isOperationEnded = true;
-    }
-
-    private void delFunction() {
-        String string = textField.getText();
-        textField.setText("");
-        isOperationEnded = false;
-        for (int j = 0; j < string.length() - 1; j++) {
-            textField.setText(textField.getText() + string.charAt(j));
-        }
-    }
-
-    private void percentFunc() {
-        num2 = Double.parseDouble(textField.getText());
-        num2 = num2 / 100;
-        textField.setText(String.valueOf(num2));
-    }
-
-    private void clearFunction() {
-        num1 = 0;
-        num2 = 0;
-        result = 0;
-        textField.setText("");
-        isOperationEnded = false;
     }
 }
