@@ -17,7 +17,7 @@ public class Calculator implements ActionListener {
 
     double num1 = 0, num2 = 0, result = 0;
     char operator;
-    boolean isOperationEnded = false;
+    boolean isOperationEnded = true;
 
     public Calculator() {
 
@@ -41,7 +41,7 @@ public class Calculator implements ActionListener {
     }
 
     private void createJTextField() {
-        textField = new JTextField("");
+        textField = new JTextField("0");
         textField.setBounds(5, 95, 545, 100);
         textField.setFont(textFieldFont);
         textField.setFocusable(false);
@@ -62,7 +62,7 @@ public class Calculator implements ActionListener {
         subButton = new JButton("-");
         addButton = new JButton("+");
         equButton = new JButton("=");
-        decimalButton = new JButton(",");
+        decimalButton = new JButton(".");
         changeSignButton = new JButton("+/-");
     }
 
@@ -216,7 +216,28 @@ public class Calculator implements ActionListener {
     private void textLength() {
         String currentText = textField.getText();
         if (currentText.length() > 10) {
-            textField.setText(currentText.substring(0, 10));
+            currentText = (currentText.substring(0, 10));
+            textField.setText(currentText);
+        }
+    }
+
+    private void trimDecimal() {
+        textLength();
+        String number = textField.getText();
+        String decimalSeparator = ".";
+        String[] parts = number.split("\\" + decimalSeparator);
+
+        if (parts.length > 1) {
+            String integerPart = parts[0];
+            String decimalPart = parts[1];
+
+            decimalPart = decimalPart.replaceAll("0+$", "");
+
+            if (decimalPart.isEmpty()) {
+                textField.setText(integerPart);
+            } else {
+                textField.setText(integerPart + decimalSeparator + decimalPart);
+            }
         }
     }
 
@@ -250,10 +271,10 @@ public class Calculator implements ActionListener {
         isOperationEnded = false;
         if (num1 != 0 ) {
             num2 = 0;
-            textField.setText("");
+            textField.setText("0");
         } else {
             num1 = 0;
-            textField.setText("");
+            textField.setText("0");
         }
     }
 
@@ -261,16 +282,21 @@ public class Calculator implements ActionListener {
         num1 = 0;
         num2 = 0;
         result = 0;
-        textField.setText("");
-        isOperationEnded = false;
+        textField.setText("0");
+        isOperationEnded = true;
     }
 
     private void delFunction() {
         String string = textField.getText();
-        textField.setText("");
-        isOperationEnded = false;
-        for (int j = 0; j < string.length() - 1; j++) {
-            textField.setText(textField.getText() + string.charAt(j));
+        if (!string.isEmpty() & string.length() > 1) {
+            textField.setText("");
+            isOperationEnded = false;
+            for (int j = 0; j < string.length() - 1; j++) {
+                textField.setText(textField.getText() + string.charAt(j));
+            }
+        } else {
+            textField.setText("0");
+            isOperationEnded = true;
         }
     }
 
@@ -279,6 +305,7 @@ public class Calculator implements ActionListener {
         result = 1 / num;
         textField.setText(String.valueOf(result));
         isOperationEnded = true;
+        trimDecimal();
     }
 
     private void sqrFunction() {
@@ -286,6 +313,7 @@ public class Calculator implements ActionListener {
         result = num1 * num1;
         textField.setText(String.valueOf(result));
         isOperationEnded = true;
+        trimDecimal();
     }
 
     private void rootFunction() {
@@ -294,6 +322,7 @@ public class Calculator implements ActionListener {
         textField.setText(String.valueOf(result));
         isOperationEnded = true;
         num1 = 0;
+        trimDecimal();
     }
 
     private void divFunction() {
@@ -360,5 +389,6 @@ public class Calculator implements ActionListener {
         }
         textField.setText(String.valueOf(result));
         isOperationEnded = true;
+        trimDecimal();
     }
 }
