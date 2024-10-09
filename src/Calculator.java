@@ -9,7 +9,7 @@ public class Calculator implements ActionListener {
     JButton[] numberButtons = new JButton[10];
     JButton[] operatorButtons = new JButton[14];
     JButton percButton, CEButton, CButton, delButton, fracButton, sqrButton, dotButton;
-    JButton rootButton, divButton, mulButton, subButton, addButton, equButton, plmnButton;
+    JButton rootButton, divButton, mulButton, subButton, addButton, equButton, changeSignButton;
     JPanel panel;
 
     Font buttonsFont = new Font("Arial", Font.PLAIN, 20);
@@ -63,7 +63,7 @@ public class Calculator implements ActionListener {
         addButton = new JButton("+");
         equButton = new JButton("=");
         dotButton = new JButton(",");
-        plmnButton = new JButton("+/-");
+        changeSignButton = new JButton("+/-");
     }
 
     private void assignButtons() {
@@ -81,7 +81,7 @@ public class Calculator implements ActionListener {
         operatorButtons[10] = addButton;
         operatorButtons[11] = equButton;
         operatorButtons[12] = dotButton;
-        operatorButtons[13] = plmnButton;
+        operatorButtons[13] = changeSignButton;
 
         for (int i = 0; i < 14; i++) {
             operatorButtons[i].addActionListener(this);
@@ -123,7 +123,7 @@ public class Calculator implements ActionListener {
         panel.add(numberButtons[2]);
         panel.add(numberButtons[3]);
         panel.add(addButton);
-        panel.add(plmnButton);
+        panel.add(changeSignButton);
         panel.add(numberButtons[0]);
         panel.add(dotButton);
         panel.add(equButton);
@@ -198,6 +198,10 @@ public class Calculator implements ActionListener {
 
         if (e.getSource() == addButton) {
             addFunction();
+        }
+
+        if (e.getSource() == changeSignButton) {
+            changeSign();
         }
 
         if (e.getSource() == equButton) {
@@ -314,6 +318,16 @@ public class Calculator implements ActionListener {
         operator = '+';
         textField.setText("");
         isOperationEnded = false;
+    }
+
+    private void changeSign () {
+        Double sign = Double.parseDouble(textField.getText());
+        if (sign > 0) {
+            textField.setText("-" + String.valueOf(sign));
+        } else if (sign < 0) {
+            sign = -sign;
+            textField.setText(String.valueOf(sign));
+        }
     }
 
     private void equFunction() {
