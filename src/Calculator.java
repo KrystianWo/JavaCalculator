@@ -210,7 +210,11 @@ public class Calculator implements ActionListener {
     private void joinNumberIfPressed(ActionEvent e) {
         for (int i = 0; i < 10; i++) {
             if (e.getSource() == numberButtons[i]) {
-                calculatorScreen.setText(calculatorScreen.getText().concat(String.valueOf(i)));
+                if (calculatorScreen.getText().equals("0")) {
+                    calculatorScreen.setText(String.valueOf(i));
+                } else {
+                    calculatorScreen.setText(calculatorScreen.getText().concat(String.valueOf(i)));
+                }
             }
         }
     }
@@ -222,14 +226,9 @@ public class Calculator implements ActionListener {
     }
 
     private void clearElementFunction() {
-        if (num1 != 0) {
-            num2 = 0;
+        if (!calculatorScreen.getText().equals("0")) {
             calculatorScreen.setText("0");
             isOperationEnded = false;
-        } else {
-            num1 = 0;
-            calculatorScreen.setText("0");
-            isOperationEnded = true;
         }
     }
 
