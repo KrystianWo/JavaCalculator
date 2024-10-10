@@ -5,7 +5,7 @@ import java.awt.event.*;
 public class Calculator implements ActionListener {
 
     JFrame frame;
-    JTextField textField;
+    JTextField calculatorScreen, currentOperationField;
     JButton[] numberButtons = new JButton[10];
     JButton[] operatorButtons = new JButton[14];
     JButton percButton, CEButton, CButton, delButton, fracButton, sqrButton, decimalButton;
@@ -13,7 +13,8 @@ public class Calculator implements ActionListener {
     JPanel panel;
 
     Font buttonsFont = new Font("Arial", Font.PLAIN, 20);
-    Font textFieldFont = new Font("Arial", Font.BOLD, 70);
+    Font calculatorScreenFont = new Font("Arial", Font.BOLD, 70);
+    Font currentOperationFont = new Font("Arial", Font.PLAIN, 30);
 
     double num1 = 0, num2 = 0, result = 0;
     char operator;
@@ -21,12 +22,13 @@ public class Calculator implements ActionListener {
 
     public Calculator() {
         createJFrame();
-        createJTextField();
+        createJTextFields();
         createJButtons();
         assignButtons();
         createPanel();
         frame.add(panel);
-        frame.add(textField);
+        frame.add(currentOperationField);
+        frame.add(calculatorScreen);
         setFrameConfigs();
     }
 
@@ -37,13 +39,20 @@ public class Calculator implements ActionListener {
         frame.setLayout(null);
     }
 
-    private void createJTextField() {
-        textField = new JTextField("0");
-        textField.setBounds(5, 95, 545, 100);
-        textField.setFont(textFieldFont);
-        textField.setFocusable(false);
-        textField.setBorder(null);
-        textField.setHorizontalAlignment(SwingConstants.RIGHT);
+    private void createJTextFields() {
+        currentOperationField = new JTextField("");
+        currentOperationField.setBounds(255, 65, 295, 30);
+        currentOperationField.setFont(currentOperationFont);
+        currentOperationField.setFocusable(false);
+        currentOperationField.setBorder(null);
+        currentOperationField.setHorizontalAlignment(JTextField.RIGHT);
+
+        calculatorScreen = new JTextField("0");
+        calculatorScreen.setBounds(5, 95, 545, 100);
+        calculatorScreen.setFont(calculatorScreenFont);
+        calculatorScreen.setFocusable(false);
+        calculatorScreen.setBorder(null);
+        calculatorScreen.setHorizontalAlignment(SwingConstants.RIGHT);
     }
 
     private void createJButtons() {
@@ -132,7 +141,7 @@ public class Calculator implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         buttonClicked(e);
-        setTextLength();
+        setTextLength(calculatorScreen);
     }
 
     private void buttonClicked(ActionEvent e) {
@@ -160,7 +169,7 @@ public class Calculator implements ActionListener {
         }
     }
 
-    private void setTextLength() {
+    private void setTextLength(JTextField textField) {
         String currentText = textField.getText();
         if (currentText.length() > 10) {
             String updatedText = currentText.substring(0, 10);
@@ -168,8 +177,8 @@ public class Calculator implements ActionListener {
         }
     }
 
-    private void trimDecimal() {
-        setTextLength();
+    private void trimDecimal(JTextField textField) {
+        setTextLength(textField);
         String number = textField.getText();
         String decimalSeparator = ".";
         String[] parts = number.split("\\" + decimalSeparator);
@@ -192,7 +201,7 @@ public class Calculator implements ActionListener {
                 num1 = 0;
                 num2 = 0;
                 result = 0;
-                textField.setText("");
+                calculatorScreen.setText("");
                 isOperationEnded = false;
             }
         }
@@ -201,25 +210,26 @@ public class Calculator implements ActionListener {
     private void joinNumberIfPressed(ActionEvent e) {
         for (int i = 0; i < 10; i++) {
             if (e.getSource() == numberButtons[i]) {
-                textField.setText(textField.getText().concat(String.valueOf(i)));
+                calculatorScreen.setText(calculatorScreen.getText().concat(String.valueOf(i)));
             }
         }
     }
 
     private void percentFunction() {
-        num1 = Double.parseDouble(textField.getText());
+        num1 = Double.parseDouble(calculatorScreen.getText());
         num1 = num1 / 100;
-        textField.setText(String.valueOf(num1));
+        calculatorScreen.setText(String.valueOf(num1));
     }
 
     private void clearElementFunction() {
         if (num1 != 0) {
             num2 = 0;
-            textField.setText("0");
+            calculatorScreen.setText("0");
             isOperationEnded = false;
         } else {
             num1 = 0;
-            textField.setText("0");
+            calculatorScreen.setText("0");
+            isOperationEnded = true;
         }
     }
 
@@ -227,102 +237,115 @@ public class Calculator implements ActionListener {
         num1 = 0;
         num2 = 0;
         result = 0;
-        textField.setText("0");
+        calculatorScreen.setText("0");
+        currentOperationField.setText("");
         isOperationEnded = true;
     }
 
     private void delFunction() {
-        String string = textField.getText();
+        String string = calculatorScreen.getText();
         if (!string.isEmpty() & string.length() > 1) {
-            textField.setText("");
+            calculatorScreen.setText("");
             isOperationEnded = false;
             for (int j = 0; j < string.length() - 1; j++) {
-                textField.setText(textField.getText() + string.charAt(j));
+                calculatorScreen.setText(calculatorScreen.getText() + string.charAt(j));
             }
         } else {
-            textField.setText("0");
+            calculatorScreen.setText("0");
             isOperationEnded = true;
         }
     }
 
     private void fracFunction() {
-        double num = Double.parseDouble(textField.getText());
+        double num = Double.parseDouble(calculatorScreen.getText());
         result = 1 / num;
-        textField.setText(String.valueOf(result));
+        calculatorScreen.setText(String.valueOf(result));
         isOperationEnded = true;
-        trimDecimal();
+        trimDecimal(calculatorScreen);
     }
 
     private void sqrFunction() {
-        num1 = Double.parseDouble(textField.getText());
+        num1 = Double.parseDouble(calculatorScreen.getText());
         result = num1 * num1;
-        textField.setText(String.valueOf(result));
+        calculatorScreen.setText(String.valueOf(result));
         isOperationEnded = true;
-        trimDecimal();
+        trimDecimal(calculatorScreen);
     }
 
     private void rootFunction() {
-        num1 = Double.parseDouble(textField.getText());
+        num1 = Double.parseDouble(calculatorScreen.getText());
         if(num1 < 0)
-            textField.setText("Error");
+            calculatorScreen.setText("Error");
         else {
             result = Math.sqrt(num1);
-            textField.setText(String.valueOf(result));
+            calculatorScreen.setText(String.valueOf(result));
         }
         isOperationEnded = true;
         num1 = 0;
-        trimDecimal();
+        trimDecimal(calculatorScreen);
     }
 
     private void divFunction() {
-        num1 = Double.parseDouble(textField.getText());
         operator = '/';
-        textField.setText("");
+        trimDecimal(calculatorScreen);
+        String trimmedNumber = calculatorScreen.getText();
+        currentOperationField.setText(trimmedNumber + " " + operator);
+        num1 = Double.parseDouble(trimmedNumber);
+        calculatorScreen.setText("");
         isOperationEnded = false;
     }
 
     private void mulFunction() {
-        num1 = Double.parseDouble(textField.getText());
         operator = '*';
-        textField.setText("");
+        trimDecimal(calculatorScreen);
+        String trimmedNumber = calculatorScreen.getText();
+        currentOperationField.setText(trimmedNumber + " " + operator);
+        num1 = Double.parseDouble(trimmedNumber);
+        calculatorScreen.setText("");
         isOperationEnded = false;
     }
 
     private void subFunction() {
-        num1 = Double.parseDouble(textField.getText());
         operator = '-';
-        textField.setText("");
+        trimDecimal(calculatorScreen);
+        String trimmedNumber = calculatorScreen.getText();
+        currentOperationField.setText(trimmedNumber + " " + operator);
+        num1 = Double.parseDouble(trimmedNumber);
+        calculatorScreen.setText("");
         isOperationEnded = false;
     }
 
     private void addFunction() {
-        num1 = Double.parseDouble(textField.getText());
         operator = '+';
-        textField.setText("");
+        trimDecimal(calculatorScreen);
+        String trimmedNumber = calculatorScreen.getText();
+        currentOperationField.setText(trimmedNumber + " " + operator);
+        num1 = Double.parseDouble(trimmedNumber);
+        calculatorScreen.setText("");
         isOperationEnded = false;
     }
 
     private void changeSignFunction() {
-        double sign = Double.parseDouble(textField.getText());
+        double sign = Double.parseDouble(calculatorScreen.getText());
         if (sign > 0) {
-            textField.setText("-" + sign);
-            trimDecimal();
+            calculatorScreen.setText("-" + sign);
+            trimDecimal(calculatorScreen);
         } else if (sign < 0) {
             double newSign = -sign;
-            textField.setText(String.valueOf(newSign));
-            trimDecimal();
+            calculatorScreen.setText(String.valueOf(newSign));
+            trimDecimal(calculatorScreen);
         }
     }
 
     private void decimalFunction() {
-        String isDecimal = textField.getText();
+        String isDecimal = calculatorScreen.getText();
         if (!isDecimal.contains(".")) {
-            textField.setText(Integer.parseInt(isDecimal) + ".");
+            calculatorScreen.setText(Integer.parseInt(isDecimal) + ".");
         }
     }
 
     private void equFunction() {
-        num2 = Double.parseDouble(textField.getText());
+        num2 = Double.parseDouble(calculatorScreen.getText());
 
         switch (operator) {
             case '+':
@@ -338,9 +361,10 @@ public class Calculator implements ActionListener {
                 result = num1 / num2;
                 break;
         }
-        textField.setText(String.valueOf(result));
+        calculatorScreen.setText(String.valueOf(result));
+        currentOperationField.setText("");
         isOperationEnded = true;
-        trimDecimal();
+        trimDecimal(calculatorScreen);
         num1 = 0;
         num2 = 0;
     }
