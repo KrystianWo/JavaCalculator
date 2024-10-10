@@ -290,7 +290,7 @@ public class Calculator implements ActionListener {
         String trimmedNumber = calculatorScreen.getText();
         currentOperationField.setText(trimmedNumber + " " + operator);
         num1 = Double.parseDouble(trimmedNumber);
-        calculatorScreen.setText("");
+        calculatorScreen.setText("0");
         isOperationEnded = false;
     }
 
@@ -300,7 +300,7 @@ public class Calculator implements ActionListener {
         String trimmedNumber = calculatorScreen.getText();
         currentOperationField.setText(trimmedNumber + " " + operator);
         num1 = Double.parseDouble(trimmedNumber);
-        calculatorScreen.setText("");
+        calculatorScreen.setText("0");
         isOperationEnded = false;
     }
 
@@ -310,7 +310,7 @@ public class Calculator implements ActionListener {
         String trimmedNumber = calculatorScreen.getText();
         currentOperationField.setText(trimmedNumber + " " + operator);
         num1 = Double.parseDouble(trimmedNumber);
-        calculatorScreen.setText("");
+        calculatorScreen.setText("0");
         isOperationEnded = false;
     }
 
@@ -320,7 +320,7 @@ public class Calculator implements ActionListener {
         String trimmedNumber = calculatorScreen.getText();
         currentOperationField.setText(trimmedNumber + " " + operator);
         num1 = Double.parseDouble(trimmedNumber);
-        calculatorScreen.setText("");
+        calculatorScreen.setText("0");
         isOperationEnded = false;
     }
 
