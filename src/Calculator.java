@@ -263,8 +263,12 @@ public class Calculator implements ActionListener {
 
     private void rootFunction() {
         num1 = Double.parseDouble(textField.getText());
-        result = Math.sqrt(num1);
-        textField.setText(String.valueOf(result));
+        if(num1 < 0)
+            textField.setText("Error");
+        else {
+            result = Math.sqrt(num1);
+            textField.setText(String.valueOf(result));
+        }
         isOperationEnded = true;
         num1 = 0;
         trimDecimal();
@@ -299,12 +303,14 @@ public class Calculator implements ActionListener {
     }
 
     private void changeSignFunction() {
-        Double sign = Double.parseDouble(textField.getText());
+        double sign = Double.parseDouble(textField.getText());
         if (sign > 0) {
             textField.setText("-" + sign);
+            trimDecimal();
         } else if (sign < 0) {
-            sign = -sign;
-            textField.setText(String.valueOf(sign));
+            double newSign = -sign;
+            textField.setText(String.valueOf(newSign));
+            trimDecimal();
         }
     }
 
