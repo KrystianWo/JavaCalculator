@@ -178,7 +178,6 @@ public class Calculator implements ActionListener {
     }
 
     private void trimDecimal(JTextField textField) {
-        setTextLength(textField);
         String number = textField.getText();
         String decimalSeparator = ".";
         String[] parts = number.split("\\" + decimalSeparator);
@@ -361,9 +360,10 @@ public class Calculator implements ActionListener {
                 break;
         }
         calculatorScreen.setText(String.valueOf(result));
+        setTextLength(calculatorScreen);
+        trimDecimal(calculatorScreen);
         currentOperationField.setText("");
         isOperationEnded = true;
-        trimDecimal(calculatorScreen);
         num1 = 0;
         num2 = 0;
     }
