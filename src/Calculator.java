@@ -205,7 +205,8 @@ public class Calculator implements ActionListener {
                     }
                 }
             }
-            default -> {}
+            default -> {
+            }
         }
     }
 
@@ -238,7 +239,8 @@ public class Calculator implements ActionListener {
             case JButton b when b == changeSignButton -> changeSignFunction();
             case JButton b when b == decimalButton -> decimalFunction();
             case JButton b when b == equButton -> equFunction();
-            default -> {}
+            default -> {
+            }
         }
     }
 
@@ -295,7 +297,7 @@ public class Calculator implements ActionListener {
 
     private void rootFunction() {
         double rootNumber = Double.parseDouble(calculatorScreen.getText());
-        if(rootNumber > 0) {
+        if (rootNumber > 0) {
             double newRootNumber = Math.sqrt(rootNumber);
             calculatorScreen.setText(String.valueOf(newRootNumber));
             isOperationEnded = true;
