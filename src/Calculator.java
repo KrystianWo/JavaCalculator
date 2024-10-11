@@ -5,7 +5,7 @@ import java.awt.event.*;
 public class Calculator implements ActionListener {
 
     JFrame frame;
-    JTextField calculatorScreen, currentOperationField;
+    JTextField calculatorScreen, currentOperationScreen;
     JButton[] numberButtons = new JButton[10];
     JButton[] operatorButtons = new JButton[14];
     JButton percButton, CEButton, CButton, delButton, fracButton, sqrButton, decimalButton;
@@ -17,8 +17,8 @@ public class Calculator implements ActionListener {
     Font currentOperationFont = new Font("Arial", Font.PLAIN, 30);
 
     double num1 = 0, num2 = 0, result = 0;
-    char operator;
-    boolean isOperationEnded = true;
+    char operator = ' ';
+    boolean isOperationEnded = true, isOperatorPressed = false;
 
     public Calculator() {
         createJFrame();
@@ -27,7 +27,7 @@ public class Calculator implements ActionListener {
         assignButtons();
         createPanel();
         frame.add(panel);
-        frame.add(currentOperationField);
+        frame.add(currentOperationScreen);
         frame.add(calculatorScreen);
         setFrameConfigs();
     }
@@ -40,12 +40,12 @@ public class Calculator implements ActionListener {
     }
 
     private void createJTextFields() {
-        currentOperationField = new JTextField("");
-        currentOperationField.setBounds(255, 65, 295, 30);
-        currentOperationField.setFont(currentOperationFont);
-        currentOperationField.setFocusable(false);
-        currentOperationField.setBorder(null);
-        currentOperationField.setHorizontalAlignment(JTextField.RIGHT);
+        currentOperationScreen = new JTextField("");
+        currentOperationScreen.setBounds(255, 65, 295, 30);
+        currentOperationScreen.setFont(currentOperationFont);
+        currentOperationScreen.setFocusable(false);
+        currentOperationScreen.setBorder(null);
+        currentOperationScreen.setHorizontalAlignment(JTextField.RIGHT);
 
         calculatorScreen = new JTextField("0");
         calculatorScreen.setBounds(5, 95, 545, 100);
@@ -142,31 +142,17 @@ public class Calculator implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         buttonClicked(e);
         setTextLength(calculatorScreen);
+        setTextLength(currentOperationScreen);
+        trimDecimal(calculatorScreen);
+        trimDecimal(currentOperationScreen);
     }
 
     private void buttonClicked(ActionEvent e) {
         if (isOperationEnded) {
             clearData(e);
         }
-        joinNumberIfPressed(e);
-        var source = e.getSource();
-        switch (source) {
-            case JButton b when b == percButton -> percentFunction();
-            case JButton b when b == CEButton -> clearElementFunction();
-            case JButton b when b == CButton -> clearFunction();
-            case JButton b when b == delButton -> delFunction();
-            case JButton b when b == fracButton -> fracFunction();
-            case JButton b when b == sqrButton -> sqrFunction();
-            case JButton b when b == rootButton -> rootFunction();
-            case JButton b when b == divButton -> divFunction();
-            case JButton b when b == mulButton -> mulFunction();
-            case JButton b when b == subButton -> subFunction();
-            case JButton b when b == addButton -> addFunction();
-            case JButton b when b == changeSignButton -> changeSignFunction();
-            case JButton b when b == decimalButton -> decimalFunction();
-            case JButton b when b == equButton -> equFunction();
-            default -> {}
-        }
+        checkForOperator(e);
+        doOperationIfPressed(e);
     }
 
     private void setTextLength(JTextField textField) {
@@ -206,6 +192,27 @@ public class Calculator implements ActionListener {
         }
     }
 
+    private void checkForOperator(ActionEvent e) {
+
+        switch (isOperatorPressed) {
+            case Boolean b when !b -> joinNumberIfPressed(e);
+            case Boolean b when b -> {
+                for (int i = 0; i < 10; i++) {
+                    if (e.getSource() == numberButtons[i]) {
+                        isOperatorPressed = false;
+                        calculatorScreen.setText("0");
+                        if (calculatorScreen.getText().equals("0")) {
+                            calculatorScreen.setText(String.valueOf(i));
+                        } else {
+                            calculatorScreen.setText(calculatorScreen.getText().concat(String.valueOf(i)));
+                        }
+                    }
+                }
+            }
+            default -> {}
+        }
+    }
+
     private void joinNumberIfPressed(ActionEvent e) {
         for (int i = 0; i < 10; i++) {
             if (e.getSource() == numberButtons[i]) {
@@ -218,10 +225,32 @@ public class Calculator implements ActionListener {
         }
     }
 
+    private void doOperationIfPressed(ActionEvent e) {
+        var source = e.getSource();
+        switch (source) {
+            case JButton b when b == percButton -> percentFunction();
+            case JButton b when b == CEButton -> clearElementFunction();
+            case JButton b when b == CButton -> clearFunction();
+            case JButton b when b == delButton -> delFunction();
+            case JButton b when b == fracButton -> fracFunction();
+            case JButton b when b == sqrButton -> sqrFunction();
+            case JButton b when b == rootButton -> rootFunction();
+            case JButton b when b == divButton -> divFunction();
+            case JButton b when b == mulButton -> mulFunction();
+            case JButton b when b == subButton -> subFunction();
+            case JButton b when b == addButton -> addFunction();
+            case JButton b when b == changeSignButton -> changeSignFunction();
+            case JButton b when b == decimalButton -> decimalFunction();
+            case JButton b when b == equButton -> equFunction();
+            default -> {}
+        }
+    }
+
     private void percentFunction() {
-        num1 = Double.parseDouble(calculatorScreen.getText());
-        num1 = num1 / 100;
-        calculatorScreen.setText(String.valueOf(num1));
+        double percentNumber = Double.parseDouble(calculatorScreen.getText());
+        double newPercentNumber = percentNumber / 100;
+        calculatorScreen.setText(String.valueOf(newPercentNumber));
+
     }
 
     private void clearElementFunction() {
@@ -236,7 +265,7 @@ public class Calculator implements ActionListener {
         num2 = 0;
         result = 0;
         calculatorScreen.setText("0");
-        currentOperationField.setText("");
+        currentOperationScreen.setText("");
         isOperationEnded = true;
     }
 
@@ -255,41 +284,37 @@ public class Calculator implements ActionListener {
     }
 
     private void fracFunction() {
-        double num = Double.parseDouble(calculatorScreen.getText());
-        result = 1 / num;
-        calculatorScreen.setText(String.valueOf(result));
+        double fracNumber = Double.parseDouble(calculatorScreen.getText());
+        double newFracNumber = 1 / fracNumber;
+        calculatorScreen.setText(String.valueOf(newFracNumber));
         isOperationEnded = true;
-        trimDecimal(calculatorScreen);
     }
 
     private void sqrFunction() {
-        num1 = Double.parseDouble(calculatorScreen.getText());
-        result = num1 * num1;
-        calculatorScreen.setText(String.valueOf(result));
+        double sqrNumber = Double.parseDouble(calculatorScreen.getText());
+        double newSqrNumber = sqrNumber * sqrNumber;
+        calculatorScreen.setText(String.valueOf(newSqrNumber));
         isOperationEnded = true;
-        trimDecimal(calculatorScreen);
     }
 
     private void rootFunction() {
-        num1 = Double.parseDouble(calculatorScreen.getText());
-        if(num1 < 0)
+        double rootNumber = Double.parseDouble(calculatorScreen.getText());
+        if(rootNumber > 0) {
+            double newRootNumber = Math.sqrt(rootNumber);
+            calculatorScreen.setText(String.valueOf(newRootNumber));
+            isOperationEnded = true;
+        } else {
             calculatorScreen.setText("Error");
-        else {
-            result = Math.sqrt(num1);
-            calculatorScreen.setText(String.valueOf(result));
         }
-        isOperationEnded = true;
-        num1 = 0;
-        trimDecimal(calculatorScreen);
     }
 
     private void divFunction() {
         operator = '/';
         trimDecimal(calculatorScreen);
         String trimmedNumber = calculatorScreen.getText();
-        currentOperationField.setText(trimmedNumber + " " + operator);
+        currentOperationScreen.setText(trimmedNumber + " " + operator);
         num1 = Double.parseDouble(trimmedNumber);
-        calculatorScreen.setText("0");
+        isOperatorPressed = true;
         isOperationEnded = false;
     }
 
@@ -297,9 +322,9 @@ public class Calculator implements ActionListener {
         operator = '*';
         trimDecimal(calculatorScreen);
         String trimmedNumber = calculatorScreen.getText();
-        currentOperationField.setText(trimmedNumber + " " + operator);
+        currentOperationScreen.setText(trimmedNumber + " " + operator);
         num1 = Double.parseDouble(trimmedNumber);
-        calculatorScreen.setText("0");
+        isOperatorPressed = true;
         isOperationEnded = false;
     }
 
@@ -307,9 +332,9 @@ public class Calculator implements ActionListener {
         operator = '-';
         trimDecimal(calculatorScreen);
         String trimmedNumber = calculatorScreen.getText();
-        currentOperationField.setText(trimmedNumber + " " + operator);
+        currentOperationScreen.setText(trimmedNumber + " " + operator);
         num1 = Double.parseDouble(trimmedNumber);
-        calculatorScreen.setText("0");
+        isOperatorPressed = true;
         isOperationEnded = false;
     }
 
@@ -317,9 +342,9 @@ public class Calculator implements ActionListener {
         operator = '+';
         trimDecimal(calculatorScreen);
         String trimmedNumber = calculatorScreen.getText();
-        currentOperationField.setText(trimmedNumber + " " + operator);
+        currentOperationScreen.setText(trimmedNumber + " " + operator);
         num1 = Double.parseDouble(trimmedNumber);
-        calculatorScreen.setText("0");
+        isOperatorPressed = true;
         isOperationEnded = false;
     }
 
@@ -362,7 +387,9 @@ public class Calculator implements ActionListener {
         calculatorScreen.setText(String.valueOf(result));
         setTextLength(calculatorScreen);
         trimDecimal(calculatorScreen);
-        currentOperationField.setText("");
+        currentOperationScreen.setText("");
+        operator = ' ';
+        isOperatorPressed = false;
         isOperationEnded = true;
         num1 = 0;
         num2 = 0;
