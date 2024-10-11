@@ -201,11 +201,7 @@ public class Calculator implements ActionListener {
                     if (e.getSource() == numberButtons[i]) {
                         isOperatorPressed = false;
                         calculatorScreen.setText("0");
-                        if (calculatorScreen.getText().equals("0")) {
-                            calculatorScreen.setText(String.valueOf(i));
-                        } else {
-                            calculatorScreen.setText(calculatorScreen.getText().concat(String.valueOf(i)));
-                        }
+                        joinNumberIfPressed(e);
                     }
                 }
             }
